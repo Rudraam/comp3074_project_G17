@@ -1,21 +1,25 @@
+
 package ca.gbc.smartpocketprototype.ui.screens
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.layout.*import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
+import ca.gbc.smartpocketprototype.viewmodels.SettingsViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SettingsScreen(navController: NavController) {
-    var budget by remember { mutableStateOf("2000") }
+fun SettingsScreen(navController: NavController, viewModel: SettingsViewModel) {
+
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
     var reminderEnabled by remember { mutableStateOf(true) }
 
     Scaffold(
@@ -36,9 +40,10 @@ fun SettingsScreen(navController: NavController) {
             Spacer(modifier = Modifier.height(16.dp))
 
             OutlinedTextField(
-                value = budget,
-                onValueChange = { budget = it },
+                value = uiState.budget,
+                onValueChange = { viewModel.onBudgetChange(it) },
                 label = { Text("Monthly Budget ($)") },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 modifier = Modifier.fillMaxWidth()
             )
             Spacer(modifier = Modifier.height(24.dp))

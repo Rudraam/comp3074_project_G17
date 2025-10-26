@@ -1,5 +1,8 @@
+
 package ca.gbc.smartpocketprototype.ui.navigation
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -11,10 +14,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.*
+import ca.gbc.smartpocketprototype.data.ExpenseRepository
 import ca.gbc.smartpocketprototype.ui.screens.*
+import ca.gbc.smartpocketprototype.viewmodels.AddExpenseViewModel
+import ca.gbc.smartpocketprototype.viewmodels.HomeViewModel
+import ca.gbc.smartpocketprototype.viewmodels.ReportsViewModel
+import ca.gbc.smartpocketprototype.viewmodels.SettingsViewModel
+import ca.gbc.smartpocketprototype.viewmodels.ViewModelFactory
 
 object AppRoutes {
     const val HOME = "home"
@@ -25,12 +35,16 @@ object AppRoutes {
 
 data class BottomNavItem(val label: String, val icon: ImageVector, val route: String)
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppNavigation() {
     val navController = rememberNavController()
-
-    // List of items for the bottom navigation bar
+    val viewModelFactory = ViewModelFactory(ExpenseRepository.getInstance())
+    val homeViewModel: HomeViewModel = viewModel(factory = viewModelFactory)
+    val settingsViewModel: SettingsViewModel = viewModel(factory = viewModelFactory)
+    val addExpenseViewModel: AddExpenseViewModel = viewModel(factory = viewModelFactory)
+    val reportsViewModel: ReportsViewModel = viewModel(factory = viewModelFactory)
     val bottomNavItems = listOf(
         BottomNavItem("Home", Icons.Default.Home, AppRoutes.HOME),
         BottomNavItem("Reports", Icons.Default.Assessment, AppRoutes.REPORTS),
@@ -76,12 +90,12 @@ fun AppNavigation() {
             startDestination = AppRoutes.HOME,
             modifier = Modifier.padding(innerPadding)
         ) {
-            composable(AppRoutes.HOME) { HomeScreen(navController = navController) }
-            composable(AppRoutes.REPORTS) { ReportsScreen(navController = navController) }
-            composable(AppRoutes.SETTINGS) { SettingsScreen(navController = navController) }
+            composable(AppRoutes.HOME) { HomeScreen(navController = navController, viewModel = homeViewModel) }
+            composable(AppRoutes.REPORTS) { ReportsScreen(viewModel = reportsViewModel) }// Reports screen remains static for now
+            composable(AppRoutes.SETTINGS) { SettingsScreen(navController = navController, viewModel = settingsViewModel) }
 
             dialog(AppRoutes.ADD_EXPENSE) {
-                AddExpenseScreen(navController = navController)
+                AddExpenseScreen(navController = navController, viewModel = addExpenseViewModel)
             }
         }
     }
