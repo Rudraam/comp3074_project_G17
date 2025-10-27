@@ -1,35 +1,24 @@
 package ca.gbc.smartpocketprototype.data
-
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.update
-class ExpenseRepository {
+import kotlinx.coroutines.flow.map
 
-    private val _transactions = MutableStateFlow<List<Transaction>>(emptyList())
-    val transactions: Flow<List<Transaction>> = _transactions
+class ExpenseRepository(private val expenseDao: ExpenseDao) {
 
-    private val _userPreferences = MutableStateFlow(UserPreferences(monthlyBudget = 2000.0))
-    val userPreferences: Flow<UserPreferences> = _userPreferences
+    val transactions: Flow<List<Transaction>> = expenseDao.getAllTransactions()
 
-    fun addExpense(transaction: Transaction) {
-        _transactions.update { currentList ->
-            currentList + transaction
+    // Handle case where preferences might not exist yet
+    val userPreferences: Flow<UserPreferences> = expenseDao.getUserPreferences().map {
+        it ?: UserPreferences(monthlyBudget = 2000.0) // Default budget
+    }
+
+    suspend fun saveTransaction(transaction: Transaction) {
+        expenseDao.insertTransaction(transaction)
+    }
+
+    suspend fun saveBudget(budget: Double) {
+        val newPreferences = UserPreferences(monthlyBudget = budget)
+        expenseDao.insertUserPreferences(newPreferences)
         }
-    }
-
-    fun saveBudget(newBudget: Double) {
-        _userPreferences.update { it.copy(monthlyBudget = newBudget) }
-    }
-    companion object {
-        @Volatile private var INSTANCE: ExpenseRepository? = null
-
-        fun getInstance(): ExpenseRepository {
-            return INSTANCE ?: synchronized(this) {
-                INSTANCE ?: ExpenseRepository().also { INSTANCE = it }
-            }
-        }
-    }
 }
-
 data class UserPreferences(val monthlyBudget: Double)
         

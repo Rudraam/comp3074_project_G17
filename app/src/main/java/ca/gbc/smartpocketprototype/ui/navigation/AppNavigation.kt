@@ -1,5 +1,4 @@
-
-package ca.gbc.smartpocketprototype.ui.navigation
+package ca.gbc.smartpocketprototype.ui.navigation // FIX 1: Correct package declaration
 
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -14,18 +13,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.*
+// FIX 2: Add all necessary imports for navigation and ViewModels
+import ca.gbc.smartpocketprototype.SmartPocketApplication
 import ca.gbc.smartpocketprototype.data.ExpenseRepository
 import ca.gbc.smartpocketprototype.ui.screens.*
-import ca.gbc.smartpocketprototype.viewmodels.AddExpenseViewModel
-import ca.gbc.smartpocketprototype.viewmodels.HomeViewModel
-import ca.gbc.smartpocketprototype.viewmodels.ReportsViewModel
-import ca.gbc.smartpocketprototype.viewmodels.SettingsViewModel
-import ca.gbc.smartpocketprototype.viewmodels.ViewModelFactory
+import ca.gbc.smartpocketprototype.viewmodels.*
 
+// FIX 3: Restore the entire navigation structure
 object AppRoutes {
     const val HOME = "home"
     const val REPORTS = "reports"
@@ -40,11 +39,19 @@ data class BottomNavItem(val label: String, val icon: ImageVector, val route: St
 @Composable
 fun AppNavigation() {
     val navController = rememberNavController()
-    val viewModelFactory = ViewModelFactory(ExpenseRepository.getInstance())
+    val context = LocalContext.current
+
+    // This section correctly sets up the database connection.
+    val databaseDao = (context.applicationContext as SmartPocketApplication).database.expenseDao()
+    val repository = ExpenseRepository(databaseDao)
+    val viewModelFactory = ViewModelFactory(repository)
+
+    // ViewModels are created using the factory connected to the database.
     val homeViewModel: HomeViewModel = viewModel(factory = viewModelFactory)
     val settingsViewModel: SettingsViewModel = viewModel(factory = viewModelFactory)
     val addExpenseViewModel: AddExpenseViewModel = viewModel(factory = viewModelFactory)
     val reportsViewModel: ReportsViewModel = viewModel(factory = viewModelFactory)
+
     val bottomNavItems = listOf(
         BottomNavItem("Home", Icons.Default.Home, AppRoutes.HOME),
         BottomNavItem("Reports", Icons.Default.Assessment, AppRoutes.REPORTS),
@@ -90,10 +97,10 @@ fun AppNavigation() {
             startDestination = AppRoutes.HOME,
             modifier = Modifier.padding(innerPadding)
         ) {
+            // The view models passed to the screens are now connected to the database
             composable(AppRoutes.HOME) { HomeScreen(navController = navController, viewModel = homeViewModel) }
-            composable(AppRoutes.REPORTS) { ReportsScreen(viewModel = reportsViewModel) }// Reports screen remains static for now
+            composable(AppRoutes.REPORTS) { ReportsScreen(viewModel = reportsViewModel) }
             composable(AppRoutes.SETTINGS) { SettingsScreen(navController = navController, viewModel = settingsViewModel) }
-
             dialog(AppRoutes.ADD_EXPENSE) {
                 AddExpenseScreen(navController = navController, viewModel = addExpenseViewModel)
             }
