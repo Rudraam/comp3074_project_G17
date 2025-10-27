@@ -50,6 +50,12 @@ fun AppNavigation() {
         BottomNavItem("Reports", Icons.Default.Assessment, AppRoutes.REPORTS),
         BottomNavItem("Settings", Icons.Default.Settings, AppRoutes.SETTINGS)
     )
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentDestination = navBackStackEntry?.destination
+    val fabVisible = when (currentDestination?.route) {
+        AppRoutes.HOME, AppRoutes.REPORTS -> true
+        else -> false
+    }
 
     Scaffold(
         bottomBar = {
@@ -76,12 +82,14 @@ fun AppNavigation() {
             }
         },
         floatingActionButton = {
-            FloatingActionButton(
-                onClick = { navController.navigate(AppRoutes.ADD_EXPENSE) },
-                containerColor = MaterialTheme.colorScheme.tertiary,
-                contentColor = MaterialTheme.colorScheme.onTertiary
-            ) {
-                Icon(Icons.Default.Add, contentDescription = "Add Expense")
+            if (fabVisible) {
+                FloatingActionButton(
+                    onClick = { navController.navigate(AppRoutes.ADD_EXPENSE) },
+                    containerColor = MaterialTheme.colorScheme.tertiary,
+                    contentColor = MaterialTheme.colorScheme.onTertiary
+                ) {
+                    Icon(Icons.Default.Add, contentDescription = "Add Expense")
+                }
             }
         }
     ) { innerPadding ->

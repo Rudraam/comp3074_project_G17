@@ -18,10 +18,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import ca.gbc.smartpocketprototype.data.Transaction
 import ca.gbc.smartpocketprototype.ui.theme.ChartGreen
-import ca.gbc.smartpocketprototype.ui.theme.TextPrimary
-import ca.gbc.smartpocketprototype.ui.theme.TextSecondary
 import ca.gbc.smartpocketprototype.ui.theme.ChartRed
 import ca.gbc.smartpocketprototype.viewmodels.HomeViewModel
+
+
 
 @Composable
 fun HomeScreen(navController: NavController, viewModel: HomeViewModel) {
@@ -35,7 +35,7 @@ fun HomeScreen(navController: NavController, viewModel: HomeViewModel) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         item {
-            Text("Welcome Back!", style = MaterialTheme.typography.headlineSmall, color = TextSecondary)
+            Text("Welcome Back!", style = MaterialTheme.typography.headlineSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
             Text("Samantha", style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold)
             Spacer(modifier = Modifier.height(24.dp))
         }
@@ -76,7 +76,7 @@ fun BudgetSummaryCard(totalSpent: Double, monthlyBudget: Double) {
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
-            Text("Monthly Budget", style = MaterialTheme.typography.titleMedium, color = TextSecondary)
+            Text("Monthly Budget", style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
             Spacer(modifier = Modifier.height(8.dp))
             val spentText = String.format("$%,.2f", totalSpent)
             val budgetText = String.format("/ $%,.2f", monthlyBudget)
@@ -84,11 +84,11 @@ fun BudgetSummaryCard(totalSpent: Double, monthlyBudget: Double) {
             val remainingText = String.format("You have $%,.2f remaining.", remaining)
 
             Row(verticalAlignment = Alignment.Bottom) {
-                Text(spentText, fontSize = 36.sp, fontWeight = FontWeight.Bold, color = TextPrimary)
+                Text(spentText, fontSize = 36.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface)
                 Text(
                     text = budgetText,
                     fontSize = 18.sp,
-                    color = TextSecondary,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.padding(bottom = 4.dp)
                 )
             }
@@ -119,11 +119,17 @@ fun BudgetSummaryCard(totalSpent: Double, monthlyBudget: Double) {
         }
     }
 }
+
+// --- FIX IS APPLIED IN THIS COMPOSABLE ---
 @Composable
 fun TransactionItem(transaction: Transaction) {
-    Card(modifier = Modifier
-        .fillMaxWidth()
-        .padding(vertical = 4.dp)) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp),
+        // Add this line to change the card's background color
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
+    ) {
         ListItem(
             headlineContent = { Text(transaction.notes, fontWeight = FontWeight.SemiBold) },
             supportingContent = { Text(transaction.category) },

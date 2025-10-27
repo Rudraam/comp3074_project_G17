@@ -1,5 +1,3 @@
-// File: app/src/main/java/ca/gbc/smartpocketprototype/viewmodels/AddExpenseViewModel.kt
-
 package ca.gbc.smartpocketprototype.viewmodels
 
 import androidx.lifecycle.ViewModel
