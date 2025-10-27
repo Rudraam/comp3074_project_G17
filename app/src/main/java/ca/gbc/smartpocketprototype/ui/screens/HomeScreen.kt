@@ -21,6 +21,8 @@ import ca.gbc.smartpocketprototype.ui.theme.ChartGreen
 import ca.gbc.smartpocketprototype.ui.theme.ChartRed
 import ca.gbc.smartpocketprototype.viewmodels.HomeViewModel
 
+
+
 @Composable
 fun HomeScreen(navController: NavController, viewModel: HomeViewModel) {
 
@@ -117,11 +119,17 @@ fun BudgetSummaryCard(totalSpent: Double, monthlyBudget: Double) {
         }
     }
 }
+
+// --- FIX IS APPLIED IN THIS COMPOSABLE ---
 @Composable
 fun TransactionItem(transaction: Transaction) {
-    Card(modifier = Modifier
-        .fillMaxWidth()
-        .padding(vertical = 4.dp)) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp),
+        // Add this line to change the card's background color
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
+    ) {
         ListItem(
             headlineContent = { Text(transaction.notes, fontWeight = FontWeight.SemiBold) },
             supportingContent = { Text(transaction.category) },
