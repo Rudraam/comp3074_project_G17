@@ -32,4 +32,3 @@ class ExpenseRepository {
 }
 
 data class UserPreferences(val monthlyBudget: Double)
-        
