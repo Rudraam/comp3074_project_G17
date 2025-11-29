@@ -15,6 +15,9 @@ import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
 private val DarkColorScheme = darkColorScheme(
+    primary = PrimaryBlue,
+    secondary = LightBlue,
+    tertiary = AccentGreen,
     background = Color(0xFF121212),
     surface = Color(0xFF1E1E1E),
     onPrimary = Color.White,
@@ -25,9 +28,16 @@ private val DarkColorScheme = darkColorScheme(
 )
 
 private val LightColorScheme = lightColorScheme(
+    primary = PrimaryBlue,
+    secondary = LightBlue,
+    tertiary = AccentGreen,
+    background = AppBackground,
+    surface = SurfaceColor,
     onPrimary = Color.White,
     onSecondary = Color.White,
     onTertiary = Color.White,
+    onBackground = TextPrimary,
+    onSurface = TextPrimary,
 )
 
 @Composable
@@ -41,6 +51,7 @@ fun SmartPocketPrototypeTheme(
         SideEffect {
             val window = (view.context as Activity).window
             window.statusBarColor = colorScheme.primary.toArgb()
+            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
         }
     }
 

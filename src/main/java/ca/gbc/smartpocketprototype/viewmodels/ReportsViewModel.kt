@@ -35,6 +35,7 @@ data class ReportsUiState(
 class ReportsViewModel(repository: ExpenseRepository) : ViewModel() {
 
     private val categoryColors = listOf(
+        ChartRed, ChartYellow, PrimaryBlue, ChartPurple, ChartGreen, TextSecondary
     )
     @RequiresApi(Build.VERSION_CODES.O)
     val uiState: StateFlow<ReportsUiState> = repository.transactions

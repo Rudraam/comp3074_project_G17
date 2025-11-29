@@ -1,0 +1,81 @@
+// File: app/src/main/java/ca/gbc/smartpocketprototype/viewmodels/AddExpenseViewModel.kt
+
+package ca.gbc.smartpocketprototype.viewmodels
+
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import ca.gbc.smartpocketprototype.data.ExpenseRepository
+import ca.gbc.smartpocketprototype.data.Transaction
+import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
+
+data class AddExpenseUiState(
+    val amount: String = "",
+    val category: String = "",
+    val notes: String = "",
+    val amountError: String? = null,
+    val categories: List<String> = emptyList()
+)
+
+class AddExpenseViewModel(private val repository: ExpenseRepository) : ViewModel() {
+
+    private val _uiState = MutableStateFlow(AddExpenseUiState())
+    val uiState: StateFlow<AddExpenseUiState> = _uiState
+
+    private val _navigateUp = MutableSharedFlow<Unit>()
+    val navigateUp = _navigateUp.asSharedFlow()
+
+    init {
+        viewModelScope.launch {
+            repository.userPreferences.map { it.categories }.collect { categories ->
+                _uiState.update {
+                    it.copy(
+                        categories = categories,
+                        category = categories.firstOrNull() ?: ""
+                    )
+                }
+            }
+        }
+    }
+
+    fun onAmountChange(newAmount: String) {
+        // Allow only numbers and a single decimal point.
+        if (newAmount.matches(Regex("^\\d*\\.?\\d*\$"))) {
+            _uiState.value = _uiState.value.copy(amount = newAmount, amountError = null)
+        }
+    }
+
+    fun onCategoryChange(newCategory: String) {
+        _uiState.value = _uiState.value.copy(category = newCategory)
+    }
+
+    fun onNotesChange(newNotes: String) {
+        _uiState.value = _uiState.value.copy(notes = newNotes)
+    }
+
+    fun saveExpense() {
+        val amountStr = _uiState.value.amount
+        val amountDouble = amountStr.toDoubleOrNull()
+
+        if (amountDouble == null || amountDouble <= 0) {
+            _uiState.value = _uiState.value.copy(amountError = "Please enter a valid amount.")
+            return
+        }
+
+        if (_uiState.value.notes.isBlank()) {
+            _uiState.value = _uiState.value.copy(notes = _uiState.value.category)
+        }
+
+        // --- Save Data ---
+        viewModelScope.launch {
+            val newTransaction = Transaction(
+                id = System.currentTimeMillis(),
+                amount = amountDouble,
+                category = _uiState.value.category,
+                notes = _uiState.value.notes
+            )
+            repository.addExpense(newTransaction)
+            _navigateUp.emit(Unit)
+        }
+    }
+}

@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ca.gbc.smartpocketprototype.ui.theme.ChartRed
+import ca.gbc.smartpocketprototype.ui.theme.TextSecondary
 import ca.gbc.smartpocketprototype.viewmodels.CalendarDayData
 import ca.gbc.smartpocketprototype.viewmodels.PieChartData
 import ca.gbc.smartpocketprototype.viewmodels.ReportsViewModel
@@ -78,9 +79,11 @@ fun CategoryReport(pieChartData: List<PieChartData>, totalSpending: Double) {
     ) {
         Text("Spending by Category", style = MaterialTheme.typography.titleLarge)
         Spacer(Modifier.height(8.dp))
+        Text(String.format("Total: $%,.2f", totalSpending), style = MaterialTheme.typography.titleMedium, color = TextSecondary)
         Spacer(Modifier.height(24.dp))
         if (pieChartData.isEmpty()) {
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                Text("No spending data yet!", style = MaterialTheme.typography.bodyLarge, color = TextSecondary)
             }
         } else {
             ManualPieChart(data = pieChartData, modifier = Modifier.size(250.dp))
