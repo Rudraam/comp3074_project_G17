@@ -1,19 +1,8 @@
 package ca.gbc.smartpocketprototype.ui.screens
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -25,40 +14,20 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import ca.gbc.smartpocketprototype.data.Transaction
-import ca.gbc.smartpocketprototype.ui.navigation.AppRoutes
 import ca.gbc.smartpocketprototype.ui.theme.ChartGreen
 import ca.gbc.smartpocketprototype.ui.theme.TextPrimary
 import ca.gbc.smartpocketprototype.ui.theme.TextSecondary
 import ca.gbc.smartpocketprototype.ui.theme.ChartRed
 import ca.gbc.smartpocketprototype.viewmodels.HomeViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(navController: NavController, viewModel: HomeViewModel) {
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("Welcome, Samantha!", fontWeight = FontWeight.Bold) },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.surface)
-            )
-        },
-        floatingActionButton = {
-            FloatingActionButton(
-                onClick = { navController.navigate(AppRoutes.ADD_EXPENSE) },
-                containerColor = MaterialTheme.colorScheme.tertiary,
-                contentColor = MaterialTheme.colorScheme.onTertiary
-            ) {
-                Icon(Icons.Default.Add, contentDescription = "Add Expense")
-            }
-        }
-    ) { padding ->
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(padding)
                 .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -77,7 +46,6 @@ fun HomeScreen(navController: NavController, viewModel: HomeViewModel) {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text("Recent Transactions", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
-                    TextButton(onClick = { navController.navigate(AppRoutes.ALL_TRANSACTIONS) }) {
                         Text("See All")
                     }
                 }

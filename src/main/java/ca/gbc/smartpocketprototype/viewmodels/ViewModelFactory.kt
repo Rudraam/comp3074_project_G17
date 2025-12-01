@@ -21,9 +21,6 @@ class ViewModelFactory(private val repository: ExpenseRepository) : ViewModelPro
             modelClass.isAssignableFrom(ReportsViewModel::class.java) -> {
                 ReportsViewModel(repository) as T
             }
-            modelClass.isAssignableFrom(AllTransactionsViewModel::class.java) -> {
-                AllTransactionsViewModel(repository) as T
-            }
             else -> throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
         }
     }

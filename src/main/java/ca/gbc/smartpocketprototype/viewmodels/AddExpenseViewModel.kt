@@ -6,15 +6,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ca.gbc.smartpocketprototype.data.ExpenseRepository
 import ca.gbc.smartpocketprototype.data.Transaction
-import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 data class AddExpenseUiState(
     val amount: String = "",
-    val category: String = "",
     val notes: String = "",
     val amountError: String? = null,
-    val categories: List<String> = emptyList()
 )
 
 class AddExpenseViewModel(private val repository: ExpenseRepository) : ViewModel() {
@@ -24,19 +21,6 @@ class AddExpenseViewModel(private val repository: ExpenseRepository) : ViewModel
 
     private val _navigateUp = MutableSharedFlow<Unit>()
     val navigateUp = _navigateUp.asSharedFlow()
-
-    init {
-        viewModelScope.launch {
-            repository.userPreferences.map { it.categories }.collect { categories ->
-                _uiState.update {
-                    it.copy(
-                        categories = categories,
-                        category = categories.firstOrNull() ?: ""
-                    )
-                }
-            }
-        }
-    }
 
     fun onAmountChange(newAmount: String) {
         // Allow only numbers and a single decimal point.

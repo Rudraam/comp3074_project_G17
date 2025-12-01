@@ -1,4 +1,3 @@
-
 package ca.gbc.smartpocketprototype.ui.navigation
 
 import android.os.Build
@@ -20,14 +19,12 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.*
 import ca.gbc.smartpocketprototype.data.ExpenseRepository
 import ca.gbc.smartpocketprototype.ui.screens.*
-import ca.gbc.smartpocketprototype.viewmodels.*
 
 object AppRoutes {
     const val HOME = "home"
     const val REPORTS = "reports"
     const val ADD_EXPENSE = "add_expense"
     const val SETTINGS = "settings"
-    const val ALL_TRANSACTIONS = "all_transactions"
 }
 
 data class BottomNavItem(val label: String, val icon: ImageVector, val route: String)
@@ -42,7 +39,6 @@ fun AppNavigation() {
     val settingsViewModel: SettingsViewModel = viewModel(factory = viewModelFactory)
     val addExpenseViewModel: AddExpenseViewModel = viewModel(factory = viewModelFactory)
     val reportsViewModel: ReportsViewModel = viewModel(factory = viewModelFactory)
-    val allTransactionsViewModel: AllTransactionsViewModel = viewModel(factory = viewModelFactory)
 
     val bottomNavItems = listOf(
         BottomNavItem("Home", Icons.Default.Home, AppRoutes.HOME),
@@ -80,15 +76,8 @@ fun AppNavigation() {
             startDestination = AppRoutes.HOME,
             modifier = Modifier.padding(innerPadding)
         ) {
-            composable(AppRoutes.HOME) { HomeScreen(navController = navController, viewModel = homeViewModel) }
-            composable(AppRoutes.REPORTS) { ReportsScreen(viewModel = reportsViewModel) }
-            composable(AppRoutes.SETTINGS) { SettingsScreen(navController = navController, viewModel = settingsViewModel) }
-            composable(AppRoutes.ADD_EXPENSE) {
                 AddExpenseScreen(navController = navController, viewModel = addExpenseViewModel)
             }
-            composable(AppRoutes.ALL_TRANSACTIONS) {
-                AllTransactionsScreen(navController = navController, viewModel = allTransactionsViewModel)
             }
         }
     }
-}
