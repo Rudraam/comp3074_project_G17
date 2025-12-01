@@ -19,11 +19,6 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.*
 import ca.gbc.smartpocketprototype.data.ExpenseRepository
 import ca.gbc.smartpocketprototype.ui.screens.*
-import ca.gbc.smartpocketprototype.viewmodels.AddExpenseViewModel
-import ca.gbc.smartpocketprototype.viewmodels.HomeViewModel
-import ca.gbc.smartpocketprototype.viewmodels.ReportsViewModel
-import ca.gbc.smartpocketprototype.viewmodels.SettingsViewModel
-import ca.gbc.smartpocketprototype.viewmodels.ViewModelFactory
 
 object AppRoutes {
     const val HOME = "home"
@@ -44,20 +39,12 @@ fun AppNavigation() {
     val settingsViewModel: SettingsViewModel = viewModel(factory = viewModelFactory)
     val addExpenseViewModel: AddExpenseViewModel = viewModel(factory = viewModelFactory)
     val reportsViewModel: ReportsViewModel = viewModel(factory = viewModelFactory)
+
     val bottomNavItems = listOf(
         BottomNavItem("Home", Icons.Default.Home, AppRoutes.HOME),
         BottomNavItem("Reports", Icons.Default.Assessment, AppRoutes.REPORTS),
         BottomNavItem("Settings", Icons.Default.Settings, AppRoutes.SETTINGS)
     )
-<<<<<<< HEAD
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentDestination = navBackStackEntry?.destination
-    val fabVisible = when (currentDestination?.route) {
-        AppRoutes.HOME, AppRoutes.REPORTS -> true
-        else -> false
-    }
-=======
->>>>>>> Jasleen
 
     Scaffold(
         bottomBar = {
@@ -82,33 +69,15 @@ fun AppNavigation() {
                     )
                 }
             }
-        },
-        floatingActionButton = {
-<<<<<<< HEAD
-            if (fabVisible) {
-=======
->>>>>>> Jasleen
-                FloatingActionButton(
-                    onClick = { navController.navigate(AppRoutes.ADD_EXPENSE) },
-                    containerColor = MaterialTheme.colorScheme.tertiary,
-                    contentColor = MaterialTheme.colorScheme.onTertiary
-                ) {
-                    Icon(Icons.Default.Add, contentDescription = "Add Expense")
-                }
-            }
+        }
     ) { innerPadding ->
         NavHost(
             navController = navController,
             startDestination = AppRoutes.HOME,
             modifier = Modifier.padding(innerPadding)
         ) {
-            composable(AppRoutes.HOME) { HomeScreen(navController = navController, viewModel = homeViewModel) }
-            composable(AppRoutes.REPORTS) { ReportsScreen(viewModel = reportsViewModel) }// Reports screen remains static for now
-            composable(AppRoutes.SETTINGS) { SettingsScreen(navController = navController, viewModel = settingsViewModel) }
-
-            dialog(AppRoutes.ADD_EXPENSE) {
                 AddExpenseScreen(navController = navController, viewModel = addExpenseViewModel)
+            }
             }
         }
     }
-}

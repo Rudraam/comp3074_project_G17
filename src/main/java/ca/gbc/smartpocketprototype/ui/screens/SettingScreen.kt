@@ -1,6 +1,5 @@
 package ca.gbc.smartpocketprototype.ui.screens
 
-import androidx.compose.foundation.layout.*import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -19,12 +18,10 @@ fun SettingsScreen(navController: NavController, viewModel: SettingsViewModel) {
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    var reminderEnabled by remember { mutableStateOf(true) }
 
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Settings & Budget", fontWeight = FontWeight.Bold) },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.surface)
             )
         }
@@ -37,7 +34,6 @@ fun SettingsScreen(navController: NavController, viewModel: SettingsViewModel) {
         ) {
             Text("Budget Management", style = MaterialTheme.typography.titleLarge)
             Spacer(modifier = Modifier.height(16.dp))
-
             OutlinedTextField(
                 value = uiState.budget,
                 onValueChange = { viewModel.onBudgetChange(it) },
@@ -47,34 +43,12 @@ fun SettingsScreen(navController: NavController, viewModel: SettingsViewModel) {
             )
             Spacer(modifier = Modifier.height(24.dp))
 
-            Text("Notifications", style = MaterialTheme.typography.titleLarge)
             Spacer(modifier = Modifier.height(16.dp))
-
-            Card(modifier = Modifier.fillMaxWidth()) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .selectable(
-                            selected = reminderEnabled,
-                            onClick = { reminderEnabled = !reminderEnabled }
-                        )
-                        .padding(16.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Text("Enable Budget Alerts", style = MaterialTheme.typography.bodyLarge)
-                    Switch(
-                        checked = reminderEnabled,
-                        onCheckedChange = { reminderEnabled = it }
-                    )
-                }
-            }
-            Text(
-                "Get notified when you are close to your budget limit.",
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.padding(start = 4.dp, top = 4.dp)
-            )
+                    Row(
+                    ) {
+                        }
+                    }
+                )
         }
     }
 }

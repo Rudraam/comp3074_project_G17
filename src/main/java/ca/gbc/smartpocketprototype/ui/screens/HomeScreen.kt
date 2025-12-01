@@ -1,9 +1,6 @@
-// File: app/src/main/java/ca/gbc/smartpocketprototype/ui/screens/HomeScreen.kt
-
 package ca.gbc.smartpocketprototype.ui.screens
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
@@ -18,58 +15,46 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import ca.gbc.smartpocketprototype.data.Transaction
 import ca.gbc.smartpocketprototype.ui.theme.ChartGreen
+import ca.gbc.smartpocketprototype.ui.theme.TextPrimary
+import ca.gbc.smartpocketprototype.ui.theme.TextSecondary
 import ca.gbc.smartpocketprototype.ui.theme.ChartRed
 import ca.gbc.smartpocketprototype.viewmodels.HomeViewModel
 
-<<<<<<< HEAD
-
-
-=======
->>>>>>> Jasleen
 @Composable
 fun HomeScreen(navController: NavController, viewModel: HomeViewModel) {
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        item {
-<<<<<<< HEAD
-            Text("Welcome Back!", style = MaterialTheme.typography.headlineSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-=======
->>>>>>> Jasleen
-            Text("Samantha", style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold)
-            Spacer(modifier = Modifier.height(24.dp))
-        }
-
-        item {
-            BudgetSummaryCard(
-                totalSpent = uiState.totalSpent,
-                monthlyBudget = uiState.monthlyBudget
-            )
-            Spacer(modifier = Modifier.height(24.dp))
-        }
-
-        item {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text("Recent Transactions", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
-                TextButton(onClick = {  }) {
-                    Text("See All")
-                }
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            item {
+                BudgetSummaryCard(
+                    totalSpent = uiState.totalSpent,
+                    monthlyBudget = uiState.monthlyBudget
+                )
+                Spacer(modifier = Modifier.height(24.dp))
             }
-            Spacer(modifier = Modifier.height(8.dp))
-        }
 
-        items(uiState.recentTransactions) { transaction ->
-            TransactionItem(transaction = transaction)
+            item {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text("Recent Transactions", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
+                        Text("See All")
+                    }
+                }
+                Spacer(modifier = Modifier.height(8.dp))
+            }
+
+            items(uiState.recentTransactions) { transaction ->
+                TransactionItem(transaction = transaction)
+            }
         }
     }
 }
@@ -82,10 +67,7 @@ fun BudgetSummaryCard(totalSpent: Double, monthlyBudget: Double) {
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
-<<<<<<< HEAD
-            Text("Monthly Budget", style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
-=======
->>>>>>> Jasleen
+            Text("Monthly Budget", style = MaterialTheme.typography.titleMedium, color = TextSecondary)
             Spacer(modifier = Modifier.height(8.dp))
             val spentText = String.format("$%,.2f", totalSpent)
             val budgetText = String.format("/ $%,.2f", monthlyBudget)
@@ -93,17 +75,11 @@ fun BudgetSummaryCard(totalSpent: Double, monthlyBudget: Double) {
             val remainingText = String.format("You have $%,.2f remaining.", remaining)
 
             Row(verticalAlignment = Alignment.Bottom) {
-<<<<<<< HEAD
-                Text(spentText, fontSize = 36.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface)
+                Text(spentText, fontSize = 36.sp, fontWeight = FontWeight.Bold, color = TextPrimary)
                 Text(
                     text = budgetText,
                     fontSize = 18.sp,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-=======
-                Text(
-                    text = budgetText,
-                    fontSize = 18.sp,
->>>>>>> Jasleen
+                    color = TextSecondary,
                     modifier = Modifier.padding(bottom = 4.dp)
                 )
             }
@@ -134,23 +110,11 @@ fun BudgetSummaryCard(totalSpent: Double, monthlyBudget: Double) {
         }
     }
 }
-<<<<<<< HEAD
-
-// --- FIX IS APPLIED IN THIS COMPOSABLE ---
 @Composable
 fun TransactionItem(transaction: Transaction) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 4.dp),
-        // Add this line to change the card's background color
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
-    ) {
-=======
-@Composable
-fun TransactionItem(transaction: Transaction) {
-            .fillMaxWidth()
->>>>>>> Jasleen
+    Card(modifier = Modifier
+        .fillMaxWidth()
+        .padding(vertical = 4.dp)) {
         ListItem(
             headlineContent = { Text(transaction.notes, fontWeight = FontWeight.SemiBold) },
             supportingContent = { Text(transaction.category) },

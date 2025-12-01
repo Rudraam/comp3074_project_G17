@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+<<<<<<< HEAD
     <style name="Theme.SmartPocketPrototype" parent="Theme.Material3.DayNight.NoActionBar">
     </style>
 </resources>
+=======
+</resources>
+>>>>>>> Jasleen
