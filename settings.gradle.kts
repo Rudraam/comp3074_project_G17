@@ -10,7 +10,6 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        // You can also add gradlePluginPortal() here if needed for dependencies
     }
 }
 
